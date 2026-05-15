@@ -4,168 +4,333 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Accountability Group 2.0 · Review</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f5f4f0;
+  --bg:#ffffff;
   --surface:#ffffff;
-  --surface2:#eeede8;
-  --surface3:#e6e5df;
+  --surface2:#f6f6f6;
+  --surface3:#efefef;
   --border:rgba(0,0,0,0.07);
-  --border2:rgba(0,0,0,0.13);
-  --text:#181816;
-  --text2:#585854;
-  --text3:#98988f;
-  --green:#639922;
-  --green-bg:#eaf3de;
-  --green-text:#3b6d11;
-  --amber-bg:#faeeda;
-  --amber-text:#854f0b;
-  --red-bg:#fcebeb;
-  --red-text:#a32d2d;
-  --radius:14px;
-  --radius-sm:9px;
-  --transition:0.22s cubic-bezier(.4,0,.2,1);
+  --border2:rgba(0,0,0,0.12);
+  --text:#111111;
+  --text2:#555555;
+  --text3:#999999;
+  --green:#4d9116;
+  --green-bg:#edf6e1;
+  --green-text:#3a7010;
+  --amber-bg:#fff4e0;
+  --amber-text:#7d4a07;
+  --red-bg:#fff0f0;
+  --red-text:#991f1f;
+  --radius:16px;
+  --radius-sm:10px;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --spring:cubic-bezier(.34,1.56,.64,1);
 }
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;}
-.page{max-width:700px;margin:0 auto;padding:0 0 5rem;}
 
-/* HERO */
-.hero{background:var(--text);color:#fff;padding:2.5rem 2rem 2rem;position:relative;overflow:hidden;}
-.hero::before{content:'2.0';position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);font-size:9rem;font-weight:600;color:rgba(255,255,255,0.05);line-height:1;pointer-events:none;font-family:'DM Mono',monospace;}
-.hero-eyebrow{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:10px;}
-.hero-title{font-size:28px;font-weight:600;line-height:1.2;margin-bottom:8px;}
-.hero-sub{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.6;}
-.hero-stats{display:flex;gap:24px;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.1);}
-.hero-stat-val{font-size:22px;font-weight:600;color:#fff;font-family:'DM Mono',monospace;}
-.hero-stat-label{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;text-transform:uppercase;letter-spacing:.06em;}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+.page{max-width:700px;margin:0 auto;padding:0 0 6rem;}
 
-/* NAV */
-.nav-wrap{background:var(--surface);border-bottom:1px solid var(--border2);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.04);}
+/* ── HERO ── */
+.hero{
+  background:var(--text);color:#fff;
+  padding:3rem 2rem 2.25rem;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'2.0';
+  position:absolute;right:1rem;top:50%;transform:translateY(-50%);
+  font-size:10rem;font-weight:700;color:rgba(255,255,255,0.04);
+  line-height:1;pointer-events:none;font-family:'DM Mono',monospace;
+  animation:heroWatermark 1.2s var(--ease) both;
+}
+@keyframes heroWatermark{from{opacity:0;transform:translateY(-44%) scale(.9)}to{opacity:1;transform:translateY(-50%) scale(1)}}
+
+.hero-eyebrow{
+  font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);margin-bottom:12px;
+  animation:fadeUp .5s .1s var(--ease) both;
+}
+.hero-title{
+  font-size:32px;font-weight:600;line-height:1.18;margin-bottom:10px;
+  animation:fadeUp .5s .2s var(--ease) both;
+}
+.hero-sub{
+  font-size:14px;color:rgba(255,255,255,0.5);line-height:1.65;
+  animation:fadeUp .5s .3s var(--ease) both;
+}
+.hero-stats{
+  display:flex;gap:28px;margin-top:1.75rem;padding-top:1.75rem;
+  border-top:1px solid rgba(255,255,255,0.1);
+  animation:fadeUp .5s .45s var(--ease) both;
+}
+.hero-stat-val{font-size:24px;font-weight:600;color:#fff;font-family:'DM Mono',monospace;}
+.hero-stat-label{font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px;text-transform:uppercase;letter-spacing:.08em;}
+
+/* ── NAV ── */
+.nav-wrap{
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border2);
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 1px 0 var(--border),0 4px 16px rgba(0,0,0,0.04);
+}
 .nav-scroll{display:flex;overflow-x:auto;padding:0 1rem;gap:2px;scrollbar-width:none;}
 .nav-scroll::-webkit-scrollbar{display:none;}
-.nav-btn{flex-shrink:0;padding:11px 13px;font-size:13px;font-weight:500;color:var(--text2);background:transparent;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:color var(--transition),border-color var(--transition);white-space:nowrap;font-family:'DM Sans',sans-serif;}
+.nav-btn{
+  flex-shrink:0;padding:12px 14px;font-size:13px;font-weight:500;
+  color:var(--text3);background:transparent;border:none;cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:color .2s var(--ease),border-color .2s var(--ease);
+  white-space:nowrap;font-family:'DM Sans',sans-serif;
+  position:relative;
+}
 .nav-btn:hover{color:var(--text);}
 .nav-btn.active{color:var(--text);border-bottom-color:var(--text);}
 .nav-all{font-weight:600;}
 
-/* SECTIONS */
-.section{padding:1.75rem 1.25rem 0;}
-.section-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:10px;}
+/* ── SECTIONS ── */
+.section{padding:2rem 1.25rem 0;}
+.section-label{
+  font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text3);margin-bottom:16px;
+}
+.card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.5rem;margin-bottom:12px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+}
 
-/* METRICS */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.metric-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.25rem;}
-.metric-label{font-size:12px;color:var(--text3);margin-bottom:4px;}
-.metric-val{font-size:26px;font-weight:600;font-family:'DM Mono',monospace;}
+/* ── SCROLL REVEAL ── */
+.reveal{
+  opacity:0;transform:translateY(18px);
+  transition:opacity .55s var(--ease),transform .55s var(--ease);
+}
+.reveal.visible{opacity:1;transform:translateY(0);}
 
-/* WEEK BARS */
-.week-row{display:flex;align-items:center;gap:12px;padding:7px 0;}
-.week-name{font-size:13px;color:var(--text2);width:160px;flex-shrink:0;}
-.week-bar-bg{flex:1;background:var(--surface2);border-radius:6px;height:8px;}
-.week-bar{height:8px;border-radius:6px;background:var(--green);}
+/* ── WEEK BARS ── */
+.week-row{display:flex;align-items:center;gap:14px;padding:9px 0;}
+.week-name{font-size:13px;color:var(--text2);width:165px;flex-shrink:0;}
+.week-bar-bg{flex:1;background:var(--surface2);border-radius:999px;height:9px;overflow:hidden;}
+.week-bar{
+  height:9px;border-radius:999px;background:var(--green);
+  width:0;transition:width 1s var(--ease);
+}
 .week-pct{font-size:13px;font-weight:500;color:var(--text2);width:36px;text-align:right;flex-shrink:0;font-family:'DM Mono',monospace;}
-.week-note{font-size:12px;color:var(--text3);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.week-note{font-size:12px;color:var(--text3);margin-top:12px;padding-top:12px;border-top:1px solid var(--border);line-height:1.6;}
 
-/* STREAK CALENDAR */
-.streak-legend{display:flex;gap:16px;align-items:center;margin-bottom:12px;}
-.legend-dot{width:14px;height:14px;border-radius:3px;display:inline-block;}
+/* ── STREAK CALENDAR ── */
+.streak-legend{display:flex;gap:18px;align-items:center;margin-bottom:14px;}
+.legend-dot{width:13px;height:13px;border-radius:3px;display:inline-block;}
 .legend-text{font-size:12px;color:var(--text3);}
-.streak-header{display:flex;gap:4px;padding-left:100px;margin-bottom:5px;}
+.streak-header{display:flex;gap:4px;padding-left:100px;margin-bottom:6px;}
 .streak-header span{width:23px;font-size:10px;color:var(--text3);text-align:center;flex-shrink:0;font-family:'DM Mono',monospace;}
-.streak-row{display:flex;align-items:center;gap:4px;margin-bottom:5px;cursor:pointer;border-radius:8px;padding:3px 2px;transition:background var(--transition);}
-.streak-row:hover{background:var(--surface2);}
-.streak-name-col{width:96px;font-size:12px;color:var(--text2);text-align:right;flex-shrink:0;padding-right:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.dot{width:23px;height:23px;border-radius:5px;flex-shrink:0;}
-.dot-green{background:#c0dd97;}
-.dot-gray{background:var(--surface2);border:1px solid var(--border2);}
-.streak-count{font-size:11px;color:var(--text3);margin-left:5px;flex-shrink:0;font-family:'DM Mono',monospace;min-width:28px;}
 
-/* MEMBER CARDS */
-.member-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:0;display:flex;gap:14px;align-items:flex-start;transition:box-shadow var(--transition),transform var(--transition);}
-.member-card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.07);transform:translateY(-1px);}
-.avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;}
+.streak-row{
+  display:flex;align-items:center;gap:4px;margin-bottom:5px;
+  cursor:pointer;border-radius:9px;padding:4px 3px;
+  transition:background .18s var(--ease),transform .15s var(--ease);
+}
+.streak-row:hover{background:var(--surface2);transform:translateX(2px);}
+.streak-name-col{
+  width:96px;font-size:12px;color:var(--text2);
+  text-align:right;flex-shrink:0;padding-right:4px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.dot{
+  width:23px;height:23px;border-radius:5px;flex-shrink:0;
+  transform:scale(0);animation:dotPop .3s var(--spring) forwards;
+}
+.dot-green{background:#b8e07a;}
+.dot-gray{background:var(--surface2);border:1px solid var(--border2);}
+.streak-count{font-size:11px;color:var(--text3);margin-left:6px;flex-shrink:0;font-family:'DM Mono',monospace;min-width:28px;}
+
+@keyframes dotPop{to{transform:scale(1)}}
+
+/* ── SCORECARD / MEMBER CARD ── */
+.scorecard-wrap{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  margin-bottom:12px;overflow:hidden;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+  transition:box-shadow .25s var(--ease),transform .25s var(--ease);
+}
+.scorecard-wrap:hover{box-shadow:0 6px 24px rgba(0,0,0,0.09);transform:translateY(-2px);}
+
+.member-card{
+  padding:1.4rem 1.5rem;display:flex;gap:16px;align-items:flex-start;
+  background:#fff;border:none;
+}
+.avatar{
+  width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;flex-shrink:0;
+  box-shadow:0 0 0 2px rgba(0,0,0,0.06);
+  transition:transform .2s var(--spring);
+}
+.scorecard-wrap:hover .avatar{transform:scale(1.08);}
 .member-info{flex:1;min-width:0;}
-.member-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px;}
+.member-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px;}
 .member-name{font-size:15px;font-weight:600;}
-.member-badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;background:var(--text);color:#fff;margin-left:7px;vertical-align:middle;letter-spacing:.03em;}
-.member-note{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;}
-.member-stats{display:flex;gap:20px;margin-bottom:10px;}
-.stat-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;}
-.stat-val{font-size:18px;font-weight:600;font-family:'DM Mono',monospace;line-height:1.2;}
-.bar-bg{background:var(--surface2);border-radius:4px;height:5px;}
-.bar-fill{height:5px;border-radius:4px;}
-.tag{display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.member-badge{
+  display:inline-block;font-size:10px;font-weight:500;
+  padding:2px 9px;border-radius:20px;
+  background:var(--text);color:#fff;margin-left:8px;
+  vertical-align:middle;letter-spacing:.04em;
+}
+.member-note{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:14px;}
+.member-stats{display:flex;gap:24px;margin-bottom:12px;}
+.stat-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+.stat-val{font-size:19px;font-weight:600;font-family:'DM Mono',monospace;line-height:1.2;}
+
+.bar-bg{background:var(--surface2);border-radius:999px;height:5px;overflow:hidden;}
+.bar-fill{height:5px;border-radius:999px;width:0;transition:width 1s var(--ease);}
+
+.tag{display:inline-block;font-size:11px;font-weight:500;padding:3px 11px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
 .tag-green{background:var(--green-bg);color:var(--green-text);}
 .tag-amber{background:var(--amber-bg);color:var(--amber-text);}
 .tag-red{background:var(--red-bg);color:var(--red-text);}
 
-/* TOGGLE DETAIL */
-.toggle-detail{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:500;color:var(--text3);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:10px;padding:0;transition:color var(--transition);}
+/* ── ACCORDION DETAIL PANEL ── */
+.toggle-detail{
+  display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;
+  color:var(--text3);background:none;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;margin-top:12px;padding:0;
+  transition:color .18s;
+}
 .toggle-detail:hover{color:var(--text);}
-.toggle-icon{font-size:10px;transition:transform var(--transition);display:inline-block;}
+.toggle-icon{
+  font-size:11px;display:inline-block;
+  transition:transform .3s var(--ease);
+}
 .toggle-detail.open .toggle-icon{transform:rotate(180deg);}
-.detail-panel{display:none;background:var(--surface2);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin-top:10px;border:1px solid var(--border2);}
-.detail-panel.open{display:block;}
-.goal-list{list-style:none;}
-.goal-list li{font-size:13px;color:var(--text2);padding:6px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;line-height:1.5;}
+
+.detail-panel{
+  overflow:hidden;max-height:0;
+  transition:max-height .4s var(--ease),opacity .3s var(--ease),padding .3s var(--ease);
+  opacity:0;
+  background:var(--surface2);
+  border-top:1px solid var(--border);
+}
+.detail-panel.open{max-height:600px;opacity:1;}
+
+.goal-list{list-style:none;padding:1rem 1.5rem;}
+.goal-list li{
+  font-size:13px;color:var(--text2);padding:7px 0;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;line-height:1.5;
+  transition:background .15s;
+}
 .goal-list li:last-child{border-bottom:none;}
 .goal-tick{font-size:14px;flex-shrink:0;}
-.carry-badge{font-size:10px;font-weight:500;padding:1px 7px;border-radius:20px;background:var(--amber-bg);color:var(--amber-text);flex-shrink:0;}
+.carry-badge{
+  font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;
+  background:var(--amber-bg);color:var(--amber-text);flex-shrink:0;
+}
 
-/* SCORECARD */
-.scorecard-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;}
-
-/* FILTER TABS */
-.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
-.tab-btn{padding:6px 14px;font-size:12px;font-weight:500;background:var(--surface);border:1px solid var(--border2);border-radius:20px;cursor:pointer;color:var(--text2);font-family:'DM Sans',sans-serif;transition:all var(--transition);}
-.tab-btn:hover{background:var(--surface2);}
+/* ── FILTER TABS ── */
+.tabs{display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap;}
+.tab-btn{
+  padding:7px 15px;font-size:12px;font-weight:500;
+  background:#fff;border:1px solid var(--border2);
+  border-radius:999px;cursor:pointer;color:var(--text2);
+  font-family:'DM Sans',sans-serif;
+  transition:all .2s var(--ease);
+}
+.tab-btn:hover{background:var(--surface2);border-color:var(--border2);}
 .tab-btn.active{background:var(--text);color:#fff;border-color:var(--text);}
 
-/* WINS */
-.win-item{padding:14px 0;border-bottom:1px solid var(--border);}
+/* ── WINS ── */
+.win-item{
+  padding:16px 0;border-bottom:1px solid var(--border);
+  transition:transform .2s var(--ease);
+}
+.win-item:hover{transform:translateX(3px);}
 .win-item:last-child{border-bottom:none;padding-bottom:0;}
 .win-item:first-child{padding-top:0;}
-.win-name{font-size:14px;font-weight:600;margin-bottom:4px;}
-.win-text{font-size:13px;color:var(--text2);line-height:1.6;}
+.win-name{font-size:14px;font-weight:600;margin-bottom:5px;}
+.win-text{font-size:13px;color:var(--text2);line-height:1.65;}
 
-/* CARRY OVER */
-.carry-item{padding:12px 0;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start;}
+/* ── CARRY OVER ── */
+.carry-item{
+  padding:14px 0;border-bottom:1px solid var(--border);
+  display:flex;gap:14px;align-items:flex-start;
+  transition:transform .2s var(--ease);
+}
+.carry-item:hover{transform:translateX(3px);}
 .carry-item:last-child{border-bottom:none;padding-bottom:0;}
 .carry-item:first-child{padding-top:0;}
-.carry-num{width:24px;height:24px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--text2);flex-shrink:0;margin-top:1px;}
-.carry-goal{font-size:14px;font-weight:500;}
-.carry-who{font-size:12px;color:var(--text3);margin-top:2px;}
+.carry-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--surface2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--text2);
+  flex-shrink:0;margin-top:1px;
+}
+.carry-goal{font-size:14px;font-weight:500;line-height:1.4;}
+.carry-who{font-size:12px;color:var(--text3);margin-top:3px;}
 
-/* NUDGE */
-.nudge-item{padding:12px 0;border-bottom:1px solid var(--border);}
+/* ── NUDGE ── */
+.nudge-item{
+  padding:14px 0;border-bottom:1px solid var(--border);
+  transition:transform .2s var(--ease);
+}
+.nudge-item:hover{transform:translateX(3px);}
 .nudge-item:last-child{border-bottom:none;padding-bottom:0;}
 .nudge-item:first-child{padding-top:0;}
 .nudge-name{font-size:14px;font-weight:600;}
-.nudge-text{font-size:13px;color:var(--text2);line-height:1.5;margin-top:3px;}
+.nudge-text{font-size:13px;color:var(--text2);line-height:1.55;margin-top:4px;}
 
-/* FOOTER */
-.footer-card{background:var(--text);color:#fff;border-radius:var(--radius);padding:2rem;margin:2rem 1.25rem 0;text-align:center;}
-.footer-title{font-size:20px;font-weight:600;margin-bottom:8px;}
-.footer-sub{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.7;}
+/* ── FOOTER ── */
+.footer-card{
+  background:var(--text);color:#fff;border-radius:var(--radius);
+  padding:2.25rem;margin:2.25rem 1.25rem 0;text-align:center;
+  position:relative;overflow:hidden;
+}
+.footer-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 70% 50%, rgba(255,255,255,0.04) 0%, transparent 70%);
+  pointer-events:none;
+}
+.footer-title{font-size:21px;font-weight:600;margin-bottom:10px;}
+.footer-sub{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.75;}
 .footer-meta{text-align:center;padding:1.5rem 1.25rem;font-size:12px;color:var(--text3);}
 
-/* BACK BUTTON */
-.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--text2);background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:7px 14px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all var(--transition);margin-bottom:1rem;}
-.back-btn:hover{background:var(--surface2);color:var(--text);}
+/* ── BACK BUTTON ── */
+.back-btn{
+  display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;
+  color:var(--text2);background:#fff;border:1px solid var(--border2);
+  border-radius:999px;padding:8px 16px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  transition:all .2s var(--ease);margin-bottom:1.25rem;
+}
+.back-btn:hover{background:var(--surface2);color:var(--text);transform:translateX(-2px);}
+.back-arrow{transition:transform .2s var(--ease);}
+.back-btn:hover .back-arrow{transform:translateX(-3px);}
+
+/* ── VIEW TRANSITIONS ── */
+.view-fade{
+  animation:viewIn .35s var(--ease) both;
+}
+@keyframes viewIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes countUp{from{opacity:0}to{opacity:1}}
 
 .hidden{display:none!important;}
 
 @media(max-width:480px){
-  .hero{padding:2rem 1.25rem 1.75rem;}
-  .hero-title{font-size:22px;}
-  .hero-stats{gap:16px;}
+  .hero{padding:2.25rem 1.25rem 2rem;}
+  .hero-title{font-size:26px;}
+  .hero-stats{gap:18px;}
   .section{padding:1.5rem 1rem 0;}
   .streak-header{padding-left:86px;}
   .streak-name-col{width:82px;}
   .week-name{width:120px;font-size:12px;}
+  .member-card{padding:1.25rem;}
 }
 </style>
 </head>
@@ -178,9 +343,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="hero-title">Accountability<br>Group 2.0</div>
   <div class="hero-sub">12 days. 12 members. The comeback is real.</div>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="hero-stat-val">10</div><div class="hero-stat-label">Active</div></div>
-    <div class="hero-stat"><div class="hero-stat-val">67%</div><div class="hero-stat-label">Avg completion</div></div>
-    <div class="hero-stat"><div class="hero-stat-val">180+</div><div class="hero-stat-label">Goals set</div></div>
+    <div class="hero-stat"><div class="hero-stat-val" data-count="10">0</div><div class="hero-stat-label">Active</div></div>
+    <div class="hero-stat"><div class="hero-stat-val" data-count="67" data-suffix="%">0%</div><div class="hero-stat-label">Avg completion</div></div>
+    <div class="hero-stat"><div class="hero-stat-val" data-count="180" data-suffix="+">0+</div><div class="hero-stat-label">Goals set</div></div>
     <div class="hero-stat"><div class="hero-stat-val">+14%</div><div class="hero-stat-label">Week on week</div></div>
   </div>
 </div>
@@ -197,15 +362,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
   <div class="section">
     <div class="section-label">Week-by-week momentum</div>
-    <div class="card">
+    <div class="card reveal">
       <div class="week-row">
         <span class="week-name">Week 1 — May 4–10</span>
-        <div class="week-bar-bg"><div class="week-bar" style="width:60%"></div></div>
+        <div class="week-bar-bg"><div class="week-bar" data-width="60"></div></div>
         <span class="week-pct">60%</span>
       </div>
       <div class="week-row">
         <span class="week-name">Week 2 — May 11–15</span>
-        <div class="week-bar-bg"><div class="week-bar" style="width:74%"></div></div>
+        <div class="week-bar-bg"><div class="week-bar" data-width="74"></div></div>
         <span class="week-pct">74%</span>
       </div>
       <div class="week-note">Group improving — up 14% week on week. The habit is forming.</div>
@@ -215,10 +380,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="section">
     <div class="section-label">Streak calendar — click a name to see their profile</div>
     <div class="streak-legend">
-      <span style="display:flex;align-items:center;gap:5px"><span class="legend-dot" style="background:#c0dd97"></span><span class="legend-text">Goals dropped</span></span>
-      <span style="display:flex;align-items:center;gap:5px"><span class="legend-dot" style="background:var(--surface2);border:1px solid var(--border2)"></span><span class="legend-text">Missed</span></span>
+      <span style="display:flex;align-items:center;gap:6px"><span class="legend-dot" style="background:#b8e07a"></span><span class="legend-text">Goals dropped</span></span>
+      <span style="display:flex;align-items:center;gap:6px"><span class="legend-dot" style="background:var(--surface2);border:1px solid var(--border2)"></span><span class="legend-text">Missed</span></span>
     </div>
-    <div class="card" style="overflow-x:auto;padding:1.25rem 1rem;">
+    <div class="card reveal" style="overflow-x:auto;padding:1.5rem 1.25rem;">
       <div class="streak-header">
         <span>4</span><span>5</span><span>6</span><span>7</span><span>8</span>
         <span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
@@ -241,7 +406,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
   <div class="section">
     <div class="section-label">Wins wall</div>
-    <div class="card">
+    <div class="card reveal">
       <div class="win-item">
         <div class="win-name">Femi — Co-Founder &amp; The Driver</div>
         <div class="win-text">Created the energy that brought this group back to life. Posts every single day, resets without excuses after bad days, and personally holds everyone accountable. "I can see you hiding in the crowd" — and he means it.</div>
@@ -271,8 +436,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
   <div class="section">
     <div class="section-label">Carried-over hall of fame</div>
-    <div style="font-size:12px;color:var(--text3);margin-bottom:12px;">Goals that kept showing up day after day. We see you. We love you. Finish them this week.</div>
-    <div class="card">
+    <div style="font-size:12px;color:var(--text3);margin-bottom:14px;line-height:1.6;">Goals that kept showing up day after day. We see you. We love you. Finish them this week.</div>
+    <div class="card reveal">
       <div class="carry-item"><div class="carry-num">1</div><div><div class="carry-goal">Portfolio — finish it!!</div><div class="carry-who">Femi · appeared every single day since May 4. Every. Single. Day.</div></div></div>
       <div class="carry-item"><div class="carry-num">2</div><div><div class="carry-goal">Sprint 3 / Drivevault</div><div class="carry-who">Femi · set and reset across 6+ days. Needs a dedicated morning, no distractions.</div></div></div>
       <div class="carry-item"><div class="carry-num">3</div><div><div class="carry-goal">Do reconciliation</div><div class="carry-who">Tola · appeared 4+ times. Still on the list.</div></div></div>
@@ -284,7 +449,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
   <div class="section">
     <div class="section-label">Members who need a nudge — with love</div>
-    <div class="card">
+    <div class="card reveal">
       <div class="nudge-item"><div class="nudge-name">Murphy</div><div class="nudge-text">Dropped goals on May 6 and has been quiet since. One solid day shows the potential — come back and string them together.</div></div>
       <div class="nudge-item"><div class="nudge-name">Kalio</div><div class="nudge-text">Active May 6, 8, 11, 12 — but gaps in between. High completion on active days. The next level is showing up more consistently.</div></div>
       <div class="nudge-item"><div class="nudge-name">Macanthony</div><div class="nudge-text">Posting goals but not closing out with end-of-day ticks. The most important part of the system is the loop — come back and close it.</div></div>
@@ -293,7 +458,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
-  <div class="footer-card">
+  <div class="footer-card reveal">
     <div class="footer-title">Week 3 starts now</div>
     <div class="footer-sub">The group is warming up. Streaks are building.<br>Goals are getting ticked. Keep going — the best week is always the next one.</div>
   </div>
@@ -303,12 +468,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <!-- ===================== SINGLE MEMBER VIEW ===================== -->
 <div id="memberView" class="hidden">
   <div class="section">
-    <button class="back-btn" id="backBtn">← Back to overview</button>
+    <button class="back-btn" id="backBtn"><span class="back-arrow">←</span> Back to overview</button>
     <div id="singleCard"></div>
   </div>
   <div class="section">
     <div class="section-label">Streak — May 4 to 15</div>
-    <div class="card" style="overflow-x:auto;padding:1.25rem 1rem;">
+    <div class="card" style="overflow-x:auto;padding:1.5rem 1.25rem;">
       <div class="streak-header">
         <span>4</span><span>5</span><span>6</span><span>7</span><span>8</span>
         <span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
@@ -483,7 +648,22 @@ const members = [
   }
 ];
 
-/* ── Helpers ── */
+/* ── Counter animation ── */
+function animateCount(el) {
+  const target = parseInt(el.dataset.count);
+  const suffix = el.dataset.suffix || '';
+  const dur = 1000;
+  const start = performance.now();
+  const step = (now) => {
+    const p = Math.min((now - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(ease * target) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* ── Streak row builder ── */
 function buildStreakRow(m) {
   const row = document.createElement('div');
   row.className = 'streak-row';
@@ -494,9 +674,10 @@ function buildStreakRow(m) {
   nameCol.textContent = m.name;
   row.appendChild(nameCol);
 
-  m.days.forEach(d => {
+  m.days.forEach((d, i) => {
     const dot = document.createElement('div');
     dot.className = 'dot ' + (d ? 'dot-green' : 'dot-gray');
+    dot.style.animationDelay = (i * 35) + 'ms';
     row.appendChild(dot);
   });
 
@@ -507,15 +688,16 @@ function buildStreakRow(m) {
   return row;
 }
 
+/* ── Scorecard builder ── */
 function buildScorecard(m, expandable = true) {
   const activeDays = m.days.filter(d => d).length;
   let maxStreak = 0, cur = 0;
   m.days.forEach(d => { if (d) { cur++; if (cur > maxStreak) maxStreak = cur; } else { cur = 0; } });
 
   const pct = m.completion;
-  const barColor = pct >= 70 ? '#639922' : pct >= 50 ? '#ba7517' : '#a32d2d';
+  const barColor = pct >= 70 ? '#4d9116' : pct >= 50 ? '#c07a1a' : '#c03030';
   const tagClass = pct >= 70 ? 'tag-green' : pct >= 50 ? 'tag-amber' : 'tag-red';
-  const tagText  = pct >= 70 ? 'On track' : pct >= 50 ? 'Building' : 'Needs push';
+  const tagText  = pct >= 70 ? 'On track'  : pct >= 50 ? 'Building' : 'Needs push';
   const filterAttr = pct >= 70 ? 'on-track' : pct >= 50 ? 'building' : 'needs-push';
 
   const wrap = document.createElement('div');
@@ -525,8 +707,6 @@ function buildScorecard(m, expandable = true) {
 
   const card = document.createElement('div');
   card.className = 'member-card';
-  card.style.borderRadius = '0';
-  card.style.border = 'none';
   card.innerHTML = `
     <div class="avatar" style="background:${m.color};color:${m.textColor}">${m.initials}</div>
     <div class="member-info">
@@ -543,7 +723,7 @@ function buildScorecard(m, expandable = true) {
         <div><div class="stat-label">Best streak</div><div class="stat-val">${maxStreak}d</div></div>
         <div><div class="stat-label">Completion</div><div class="stat-val">${pct}%</div></div>
       </div>
-      <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
+      <div class="bar-bg"><div class="bar-fill" data-width="${pct}" style="background:${barColor}"></div></div>
       ${expandable ? `<button class="toggle-detail" data-card-id="${m.id}"><span>Show notable goals</span><span class="toggle-icon">▾</span></button>` : ''}
     </div>`;
   wrap.appendChild(card);
@@ -552,7 +732,6 @@ function buildScorecard(m, expandable = true) {
     const panel = document.createElement('div');
     panel.className = 'detail-panel';
     panel.id = 'panel-' + m.id;
-    panel.style.cssText = 'margin:0;border-radius:0;border-left:none;border-right:none;border-bottom:none;';
     panel.innerHTML = `<ul class="goal-list">${m.goals.map(g =>
       `<li>
         <span class="goal-tick">${g.done ? '✅' : '⬜'}</span>
@@ -565,13 +744,18 @@ function buildScorecard(m, expandable = true) {
   return wrap;
 }
 
-/* ── Render streak rows ── */
+/* ── Render ── */
 const streakContainer = document.getElementById('streakRows');
 members.forEach(m => streakContainer.appendChild(buildStreakRow(m)));
 
-/* ── Render scorecards ── */
 const scorecardsContainer = document.getElementById('scorecards');
-members.forEach(m => scorecardsContainer.appendChild(buildScorecard(m)));
+members.forEach((m, i) => {
+  const card = buildScorecard(m);
+  card.style.opacity = '0';
+  card.style.transform = 'translateY(14px)';
+  card.style.transition = `opacity .4s ${i * 60}ms, transform .4s ${i * 60}ms`;
+  scorecardsContainer.appendChild(card);
+});
 
 /* ── Build member nav ── */
 const nav = document.getElementById('memberNav');
@@ -583,6 +767,44 @@ members.forEach(m => {
   nav.appendChild(btn);
 });
 
+/* ── IntersectionObserver for reveal + bar animations ── */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+
+    // reveal cards
+    if (entry.target.classList.contains('reveal')) {
+      entry.target.classList.add('visible');
+    }
+
+    // scorecard stagger
+    if (entry.target.id === 'scorecards') {
+      entry.target.querySelectorAll('.scorecard-wrap').forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      });
+    }
+
+    // animate bars (week bars + member bars)
+    entry.target.querySelectorAll('.week-bar[data-width], .bar-fill[data-width]').forEach(bar => {
+      bar.style.width = bar.dataset.width + '%';
+    });
+
+    io.unobserve(entry.target);
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+io.observe(document.getElementById('scorecards'));
+document.querySelectorAll('.card').forEach(el => io.observe(el));
+
+/* ── Hero counter animation on load ── */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.querySelectorAll('[data-count]').forEach(el => animateCount(el));
+  }, 500);
+});
+
 /* ── Filter tabs ── */
 document.getElementById('filterTabs').addEventListener('click', e => {
   const btn = e.target.closest('.tab-btn');
@@ -591,11 +813,21 @@ document.getElementById('filterTabs').addEventListener('click', e => {
   btn.classList.add('active');
   const filter = btn.dataset.filter;
   document.querySelectorAll('#scorecards > div').forEach(el => {
-    el.style.display = (filter === 'all' || el.dataset.filter === filter) ? '' : 'none';
+    const show = filter === 'all' || el.dataset.filter === filter;
+    el.style.display = show ? '' : 'none';
+    if (show) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(8px)';
+      requestAnimationFrame(() => {
+        el.style.transition = 'opacity .3s, transform .3s';
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+    }
   });
 });
 
-/* ── Toggle goal panels ── */
+/* ── Accordion toggle ── */
 document.getElementById('scorecards').addEventListener('click', e => {
   const btn = e.target.closest('.toggle-detail');
   if (!btn) return;
@@ -606,7 +838,7 @@ document.getElementById('scorecards').addEventListener('click', e => {
   btn.querySelector('span:first-child').textContent = isOpen ? 'Show notable goals' : 'Hide notable goals';
 });
 
-/* ── Click streak row → member view ── */
+/* ── Streak row click → member view ── */
 document.getElementById('streakRows').addEventListener('click', e => {
   const row = e.target.closest('.streak-row');
   if (row && row.dataset.memberId) showMember(row.dataset.memberId);
@@ -630,26 +862,46 @@ document.getElementById('backBtn').addEventListener('click', () => {
 });
 
 function showAll() {
-  document.getElementById('overviewSection').classList.remove('hidden');
-  document.getElementById('memberView').classList.add('hidden');
+  const ov = document.getElementById('overviewSection');
+  const mv = document.getElementById('memberView');
+  mv.classList.add('hidden');
+  ov.classList.remove('hidden');
+  ov.classList.add('view-fade');
+  ov.addEventListener('animationend', () => ov.classList.remove('view-fade'), { once: true });
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function showMember(id) {
   const m = members.find(x => x.id === id);
   if (!m) return;
+
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.member === id));
   document.getElementById('overviewSection').classList.add('hidden');
-  document.getElementById('memberView').classList.remove('hidden');
 
+  const mv = document.getElementById('memberView');
+  mv.classList.remove('hidden');
+  mv.classList.add('view-fade');
+  mv.addEventListener('animationend', () => mv.classList.remove('view-fade'), { once: true });
+
+  /* single card */
   const singleCard = document.getElementById('singleCard');
   singleCard.innerHTML = '';
   singleCard.appendChild(buildScorecard(m, false));
 
+  /* trigger bar animation immediately */
+  requestAnimationFrame(() => {
+    singleCard.querySelectorAll('.bar-fill[data-width]').forEach(bar => {
+      bar.style.transition = 'width 1s cubic-bezier(.4,0,.2,1)';
+      bar.style.width = bar.dataset.width + '%';
+    });
+  });
+
+  /* single streak */
   const singleStreak = document.getElementById('singleStreakRow');
   singleStreak.innerHTML = '';
   singleStreak.appendChild(buildStreakRow(m));
 
+  /* goals */
   const goalsContainer = document.getElementById('singleGoals');
   goalsContainer.innerHTML = '';
   const card = document.createElement('div');
