@@ -740,7 +740,7 @@ function calcScore(m) {
 function buildLeaderboard() {
   const ranked = [...members]
     .map(m => ({ ...m, score: calcScore(m) }))
-    .sort((a, b) => b.score - a.score);
+    .sort((a, b) => b.score - a.score || members.indexOf(a) - members.indexOf(b));
 
   const topScore = ranked[0].score;
   const medals = ['🥇', '🥈', '🥉'];
