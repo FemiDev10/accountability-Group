@@ -283,6 +283,77 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .nudge-name{font-size:14px;font-weight:600;}
 .nudge-text{font-size:13px;color:var(--text2);line-height:1.55;margin-top:4px;}
 
+/* ── LEADERBOARD ── */
+.lb-podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;}
+.lb-podium-card{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.25rem 1rem;text-align:center;position:relative;overflow:hidden;
+  cursor:pointer;
+  transition:transform .25s var(--spring),box-shadow .25s var(--ease);
+}
+.lb-podium-card:hover{transform:translateY(-4px);box-shadow:0 10px 32px rgba(0,0,0,0.1);}
+.lb-podium-card.rank-1{
+  border-color:rgba(212,175,55,0.4);
+  background:linear-gradient(160deg,#fffdf0 0%,#fff 60%);
+}
+.lb-podium-card.rank-2{
+  border-color:rgba(160,160,170,0.4);
+  background:linear-gradient(160deg,#f8f8f9 0%,#fff 60%);
+}
+.lb-podium-card.rank-3{
+  border-color:rgba(180,120,80,0.3);
+  background:linear-gradient(160deg,#fff8f4 0%,#fff 60%);
+}
+.lb-medal{font-size:22px;margin-bottom:8px;display:block;animation:medalBounce .6s var(--spring) both;}
+@keyframes medalBounce{from{transform:scale(0) rotate(-15deg)}to{transform:scale(1) rotate(0deg)}}
+.lb-podium-avatar{
+  width:46px;height:46px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:600;margin:0 auto 10px;
+  box-shadow:0 0 0 3px #fff,0 0 0 4px rgba(0,0,0,0.08);
+  transition:transform .2s var(--spring);
+}
+.lb-podium-card:hover .lb-podium-avatar{transform:scale(1.1);}
+.lb-podium-name{font-size:13px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-podium-score{font-size:22px;font-weight:700;font-family:'DM Mono',monospace;line-height:1;}
+.lb-podium-score-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-top:3px;}
+.lb-podium-bar{height:3px;border-radius:999px;margin-top:12px;width:0;transition:width 1s var(--ease);}
+
+.lb-list{display:flex;flex-direction:column;gap:8px;}
+.lb-row{
+  display:flex;align-items:center;gap:14px;
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:.85rem 1.1rem;
+  cursor:pointer;
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease),background .15s;
+  opacity:0;transform:translateX(-12px);
+}
+.lb-row.visible{opacity:1;transform:translateX(0);}
+.lb-row:hover{background:var(--surface2);transform:translateX(4px);box-shadow:0 3px 12px rgba(0,0,0,0.06);}
+.lb-rank{
+  font-size:13px;font-weight:700;font-family:'DM Mono',monospace;
+  color:var(--text3);width:22px;text-align:center;flex-shrink:0;
+}
+.lb-avatar{
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:600;
+  transition:transform .2s var(--spring);
+}
+.lb-row:hover .lb-avatar{transform:scale(1.1);}
+.lb-name{font-size:14px;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-score-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.lb-bar-bg{width:80px;background:var(--surface2);border-radius:999px;height:5px;overflow:hidden;}
+.lb-bar-fill{height:5px;border-radius:999px;width:0;transition:width 1s var(--ease);}
+.lb-score-num{font-size:13px;font-weight:600;font-family:'DM Mono',monospace;color:var(--text2);width:28px;text-align:right;}
+
+.lb-formula{
+  font-size:11px;color:var(--text3);
+  background:var(--surface2);border-radius:8px;
+  padding:8px 14px;margin-bottom:14px;line-height:1.6;
+}
+.lb-formula strong{color:var(--text2);}
+
 /* ── FOOTER ── */
 .footer-card{
   background:var(--text);color:#fff;border-radius:var(--radius);
@@ -375,6 +446,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       </div>
       <div class="week-note">Group improving — up 14% week on week. The habit is forming.</div>
     </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Leaderboard</div>
+    <div class="lb-formula">
+      Score = <strong>40%</strong> attendance · <strong>40%</strong> completion · <strong>20%</strong> best streak &nbsp;·&nbsp; click any row to view their profile
+    </div>
+    <div class="lb-podium" id="lbPodium"></div>
+    <div class="lb-list" id="lbList"></div>
   </div>
 
   <div class="section">
@@ -648,6 +728,86 @@ const members = [
   }
 ];
 
+/* ── Leaderboard ── */
+function calcScore(m) {
+  const activeDays = m.days.filter(d => d).length;
+  let maxStreak = 0, cur = 0;
+  m.days.forEach(d => { if (d) { cur++; if (cur > maxStreak) maxStreak = cur; } else { cur = 0; } });
+  return Math.round((activeDays / 12) * 40 + (m.completion / 100) * 40 + (maxStreak / 12) * 20);
+}
+
+function buildLeaderboard() {
+  const ranked = [...members]
+    .map(m => ({ ...m, score: calcScore(m) }))
+    .sort((a, b) => b.score - a.score);
+
+  const topScore = ranked[0].score;
+  const medals = ['🥇', '🥈', '🥉'];
+  const podiumColors = ['#D4AF37', '#9E9E9E', '#CD7F32'];
+
+  /* ── Podium (top 3) ── */
+  const podium = document.getElementById('lbPodium');
+  ranked.slice(0, 3).forEach((m, i) => {
+    const card = document.createElement('div');
+    card.className = `lb-podium-card rank-${i + 1}`;
+    card.dataset.memberId = m.id;
+    card.style.animationDelay = (i * 100) + 'ms';
+    card.innerHTML = `
+      <span class="lb-medal" style="animation-delay:${i * 120 + 300}ms">${medals[i]}</span>
+      <div class="lb-podium-avatar" style="background:${m.color};color:${m.textColor}">${m.initials}</div>
+      <div class="lb-podium-name">${m.name}</div>
+      <div class="lb-podium-score" data-count="${m.score}">0</div>
+      <div class="lb-podium-score-label">points</div>
+      <div class="lb-podium-bar" data-width="${Math.round(m.score / topScore * 100)}" style="background:${podiumColors[i]}"></div>`;
+    podium.appendChild(card);
+    card.addEventListener('click', () => {
+      showMember(m.id);
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.member === m.id));
+    });
+  });
+
+  /* ── List (4–12) ── */
+  const list = document.getElementById('lbList');
+  ranked.slice(3).forEach((m, i) => {
+    const row = document.createElement('div');
+    row.className = 'lb-row';
+    row.dataset.memberId = m.id;
+    row.style.transitionDelay = (i * 55) + 'ms';
+    const barColor = m.score >= 70 ? '#4d9116' : m.score >= 50 ? '#c07a1a' : '#c03030';
+    row.innerHTML = `
+      <div class="lb-rank">${i + 4}</div>
+      <div class="lb-avatar" style="background:${m.color};color:${m.textColor}">${m.initials}</div>
+      <div class="lb-name">${m.name}</div>
+      <div class="lb-score-wrap">
+        <div class="lb-bar-bg"><div class="lb-bar-fill" data-width="${Math.round(m.score / topScore * 100)}" style="background:${barColor}"></div></div>
+        <div class="lb-score-num">${m.score}</div>
+      </div>`;
+    list.appendChild(row);
+    row.addEventListener('click', () => {
+      showMember(m.id);
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.member === m.id));
+    });
+  });
+
+  /* Animate list rows in with stagger via observer */
+  const listObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.querySelectorAll('.lb-row').forEach((row, i) => {
+        setTimeout(() => row.classList.add('visible'), i * 55);
+      });
+      entry.target.querySelectorAll('.lb-bar-fill[data-width],.lb-podium-bar[data-width]').forEach(bar => {
+        bar.style.width = bar.dataset.width + '%';
+      });
+      entry.target.querySelectorAll('[data-count]').forEach(el => animateCount(el));
+      listObs.unobserve(entry.target);
+    });
+  }, { threshold: 0.1 });
+
+  listObs.observe(document.getElementById('lbPodium'));
+  listObs.observe(document.getElementById('lbList'));
+}
+
 /* ── Counter animation ── */
 function animateCount(el) {
   const target = parseInt(el.dataset.count);
@@ -743,6 +903,9 @@ function buildScorecard(m, expandable = true) {
   }
   return wrap;
 }
+
+/* ── Build leaderboard ── */
+buildLeaderboard();
 
 /* ── Render ── */
 const streakContainer = document.getElementById('streakRows');
